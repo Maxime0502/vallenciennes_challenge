@@ -1,0 +1,23 @@
+<component name="libraryTable">
+  <library name="compilers">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.core.commands-3.12.400.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/ecj-3.43.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.core.filesystem-1.11.300.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.core.contenttype-3.9.700.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.osgi-3.23.200.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.jdt.core-3.43.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.equinox.preferences-3.12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.core.jobs-3.15.700.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.core.runtime-3.34.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.equinox.common-3.20.200.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.core.resources-3.23.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.equinox.app-1.7.500.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.text-3.14.400.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.core.expressions-3.9.500.jar!/" />
+      <root url="jar://$PROJECT_DIR$/compilers/org.eclipse.equinox.registry-3.12.500.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

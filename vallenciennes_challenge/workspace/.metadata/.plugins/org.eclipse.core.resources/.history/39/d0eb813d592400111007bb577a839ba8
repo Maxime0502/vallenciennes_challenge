@@ -1,0 +1,8 @@
+package TeamQuiroga;
+
+
+import robocode.*;
+
+public class BasicBot {
+
+}

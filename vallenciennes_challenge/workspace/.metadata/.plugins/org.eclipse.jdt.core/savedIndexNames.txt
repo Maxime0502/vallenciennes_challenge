@@ -1,0 +1,5 @@
+INDEX VERSION 1.134+C:\Users\Quiroga\Downloads\vallenciennes_challenge\workspace\.metadata\.plugins\org.eclipse.jdt.core
+564592594.index
+2829310974.index
+1865797976.index
+2854439415.index
