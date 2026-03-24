@@ -1,88 +1,76 @@
-package mon.robot;
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
 
-import robocode.*;
-import robocode.util.Utils;
+package Raph;
+
 import java.awt.Color;
+import robocode.AdvancedRobot;
+import robocode.HitRobotEvent;
+import robocode.HitWallEvent;
+import robocode.ScannedRobotEvent;
+import robocode.WinEvent;
+import robocode.util.Utils;
 
 public class GreyDarkChallenge1 extends AdvancedRobot {
-    
-    private double moveDirection = 1;
-    private double lastScanTime = 0;
+    private double moveDirection = (double)1.0F;
+    private double lastScanTime = (double)0.0F;
 
     public void run() {
-        // --- LOOK TOTAL DARK GREY ---
-        Color darkGrey = new Color(35, 35, 35);
-        setBodyColor(darkGrey);
-        setGunColor(darkGrey);
-        setRadarColor(darkGrey);
-        setBulletColor(Color.LIGHT_GRAY);
-        setScanColor(new Color(50, 50, 50));
+        Color var1 = new Color(35, 35, 35);
+        this.setBodyColor(var1);
+        this.setGunColor(var1);
+        this.setRadarColor(var1);
+        this.setBulletColor(Color.LIGHT_GRAY);
+        this.setScanColor(new Color(50, 50, 50));
+        this.setAdjustRadarForGunTurn(true);
+        this.setAdjustGunForRobotTurn(true);
 
-        setAdjustRadarForGunTurn(true);
-        setAdjustGunForRobotTurn(true);
-
-        // Scan infini pour une conscience situationnelle totale
-        while (true) {
-            turnRadarRightRadians(Double.POSITIVE_INFINITY);
+        while(true) {
+            this.turnRadarRightRadians(Double.POSITIVE_INFINITY);
         }
     }
 
-    public void onScannedRobot(ScannedRobotEvent e) {
-        double absBearing = getHeadingRadians() + e.getBearingRadians();
-        double distance = e.getDistance();
-        
-        // --- STRATÉGIE 1 : FUITE ET DISTANCIATION ---
-        // Dans une mêlée à 9, la survie = distance.
-        // On essaie de maintenir un angle de 100-110 degrés pour s'éloigner en tournant.
-        double turnAngle = e.getBearingRadians() + Math.PI / 2 + (distance < 400 ? 0.35 : 0.15);
-        setTurnRightRadians(Utils.normalRelativeAngle(turnAngle));
-        
-        // On avance par petits bonds pour rester imprévisible
-        if (getTime() % 20 == 0) {
-            moveDirection *= (Math.random() > 0.5 ? 1 : -1);
+    public void onScannedRobot(ScannedRobotEvent var1) {
+        double var2 = this.getHeadingRadians() + var1.getBearingRadians();
+        double var4 = var1.getDistance();
+        double var6 = var1.getBearingRadians() + (Math.PI / 2D) + (var4 < (double)400.0F ? 0.35 : 0.15);
+        this.setTurnRightRadians(Utils.normalRelativeAngle(var6));
+        if (this.getTime() % 20L == 0L) {
+            this.moveDirection *= (double)(Math.random() > (double)0.5F ? 1 : -1);
         }
-        setAhead(150 * moveDirection);
 
-        // --- STRATÉGIE 2 : TIR SÉLECTIF (L'ÉCONOMIE) ---
-        // Ne pas gaspiller d'énergie si la cible est trop loin dans le chaos
-        if (distance < 500 || getEnergy() > 60) {
-            double firePower = Math.min(Math.min(3.0, 600 / distance), e.getEnergy() / 4);
-            
-            // Anticipation simplifiée pour la mêlée
-            double bulletSpeed = 20 - 3 * firePower;
-            double predict = (e.getVelocity() * Math.sin(e.getHeadingRadians() - absBearing) / bulletSpeed);
-            
-            setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - getGunHeadingRadians() + predict));
-
-            if (getGunHeat() == 0 && Math.abs(getGunTurnRemaining()) < 5) {
-                setFire(firePower);
+        this.setAhead((double)150.0F * this.moveDirection);
+        if (var4 < (double)500.0F || this.getEnergy() > (double)60.0F) {
+            double var8 = Math.min(Math.min((double)3.0F, (double)600.0F / var4), var1.getEnergy() / (double)4.0F);
+            double var10 = (double)20.0F - (double)3.0F * var8;
+            double var12 = var1.getVelocity() * Math.sin(var1.getHeadingRadians() - var2) / var10;
+            this.setTurnGunRightRadians(Utils.normalRelativeAngle(var2 - this.getGunHeadingRadians() + var12));
+            if (this.getGunHeat() == (double)0.0F && Math.abs(this.getGunTurnRemaining()) < (double)5.0F) {
+                this.setFire(var8);
             }
         }
 
-        // --- STRATÉGIE 3 : RADAR "LOCK-ON-PASS" ---
-        // On force le radar à faire un demi-tour rapide s'il détecte quelqu'un 
-        // pour garder l'info fraîche sans s'arrêter de scanner les autres.
-        double radarTurn = Utils.normalRelativeAngle(absBearing - getRadarHeadingRadians());
-        setTurnRadarRightRadians(radarTurn * 1.5);
+        double var14 = Utils.normalRelativeAngle(var2 - this.getRadarHeadingRadians());
+        this.setTurnRadarRightRadians(var14 * (double)1.5F);
     }
 
-    // Gestion intelligente des murs pour le 1000x1000
-    public void onHitWall(HitWallEvent e) {
-        moveDirection = -moveDirection;
-        setAhead(150 * moveDirection);
+    public void onHitWall(HitWallEvent var1) {
+        this.moveDirection = -this.moveDirection;
+        this.setAhead((double)150.0F * this.moveDirection);
     }
 
-    // Si on se fait percuter à 9 robots, il faut s'éjecter vite !
-    public void onHitRobot(HitRobotEvent e) {
-        moveDirection = -moveDirection;
-        setAhead(100 * moveDirection);
+    public void onHitRobot(HitRobotEvent var1) {
+        this.moveDirection = -this.moveDirection;
+        this.setAhead((double)100.0F * this.moveDirection);
     }
 
-    // Si on gagne un round, petite danse de victoire (optionnel)
-    public void onWin(WinEvent e) {
-        for (int i = 0; i < 50; i++) {
-            turnRight(30);
-            turnLeft(30);
+    public void onWin(WinEvent var1) {
+        for(int var2 = 0; var2 < 50; ++var2) {
+            this.turnRight((double)30.0F);
+            this.turnLeft((double)30.0F);
         }
+
     }
 }
