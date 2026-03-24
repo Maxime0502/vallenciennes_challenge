@@ -1,0 +1,61 @@
+package Noel;
+
+import java.awt.Color;
+
+import robocode.*;
+import robocode.util.Utils;
+
+public class ScoutBot extends TeamRobot {
+
+    public void run() {
+    	setBodyColor(Color.DARK_GRAY);
+		setGunColor(Color.DARK_GRAY);
+		setRadarColor(Color.DARK_GRAY);
+		setBulletColor(Color.DARK_GRAY);
+		setScanColor(Color.DARK_GRAY);
+
+        setAdjustGunForRobotTurn(true);
+        setAdjustRadarForGunTurn(true);
+
+        while (true) {
+            setTurnRadarRight(360);
+            setAhead(80);
+            setTurnRight(30);
+            execute();
+        }
+    }
+
+    public void onScannedRobot(ScannedRobotEvent e) {
+        if (isTeammate(e.getName())) return;
+
+        try {
+            broadcastMessage(e.getName());
+        } catch (Exception ex) {
+        }
+
+        double absBearing = getHeadingRadians() + e.getBearingRadians();
+        double radarTurn = Utils.normalRelativeAngle(absBearing - getRadarHeadingRadians());
+        setTurnRadarRightRadians(radarTurn * 2);
+
+        if (getEnergy() > 30) {
+            setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - getGunHeadingRadians()));
+            if (getGunHeat() == 0) {
+                setFire(1.2);
+            }
+        }
+
+        execute();
+    }
+
+    public void onHitByBullet(HitByBulletEvent e) {
+        setTurnRight(60);
+        setAhead(120);
+        execute();
+    }
+
+    public void onHitWall(HitWallEvent e) {
+        setBack(100);
+        setTurnRight(90);
+        execute();
+    }
+}
