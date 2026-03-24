@@ -1,0 +1,104 @@
+package Noel;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+
+import robocode.*;
+import robocode.util.Utils;
+
+public class SurvivorBotChg1 extends AdvancedRobot {
+
+    private int direction = 1;
+    
+    private boolean fleeMode = false; 
+
+    public void run() {
+    	
+    	setBodyColor(Color.DARK_GRAY);
+		setGunColor(Color.DARK_GRAY);
+		setRadarColor(Color.DARK_GRAY);
+		setBulletColor(Color.DARK_GRAY);
+		setScanColor(Color.DARK_GRAY);
+
+        setAdjustGunForRobotTurn(true);
+        setAdjustRadarForGunTurn(true);
+
+        while (true) {
+        	
+        	if(!fleeMode) {
+
+                setTurnRadarRight(360);
+                execute();
+        	} else {
+        		
+        	}
+        	
+        }
+    }
+
+    public void onScannedRobot(ScannedRobotEvent e) {
+        double absBearing = getHeadingRadians() + e.getBearingRadians();
+
+        setTurnRightRadians(Utils.normalRelativeAngle(e.getBearingRadians() + Math.PI / 2 - 0.25 * direction));
+        setAhead(80 * direction);
+
+        if (Math.random() < 0.04) {
+            direction = -direction;
+        }
+
+        double radarTurn = Utils.normalRelativeAngle(absBearing - getRadarHeadingRadians());
+        setTurnRadarRightRadians(radarTurn * 2);
+
+        double gunTurn = Utils.normalRelativeAngle(absBearing - getGunHeadingRadians());
+        setTurnGunRightRadians(gunTurn);
+
+        double distance = e.getDistance();
+        double firePower;
+
+
+        
+        
+        if (distance < 150) {
+            firePower = 2.2;
+        } else if (distance < 350) {
+            firePower = 1.6;
+        } else {
+            firePower = 1.0;
+        }
+
+        if (getGunHeat() == 0 && Math.abs(getGunTurnRemaining()) < 10) {
+            setFire(firePower);
+        }
+
+        execute();
+    }
+
+    public void onHitWall(HitWallEvent e) {
+        direction = -direction;
+        setBack(120);
+        setTurnRight(90);
+        execute();
+    }
+
+    public void onHitByBullet(HitByBulletEvent e) {
+        direction = -direction;
+        setTurnRight(60);
+        setAhead(100);
+        execute();
+    }
+
+    public void onHitRobot(HitRobotEvent e) {
+        if (e.isMyFault()) {
+            setBack(80);
+        }
+        setFire(2);
+        execute();
+    }
+    
+    public void onPaint(Graphics2D g) {
+		g.setColor(Color.DARK_GRAY);
+		g.drawOval((int) (getX() - 50), (int) (getY() - 50), 100, 100);
+		g.setColor(Color.DARK_GRAY);
+		g.fillOval((int) (getX() - 60), (int) (getY() - 60), 120, 120);
+	}
+}
